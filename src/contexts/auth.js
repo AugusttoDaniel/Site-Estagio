@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
 	const signin = async (email, password) => {
 		try {
 			const response = await fetch("https://estagio-omega.vercel.app/token/", {
-				// Adjust the URL based on your setup
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -39,26 +38,24 @@ export const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const signup = (email, password) => {
-		const usersStorage = JSON.parse(localStorage.getItem("users_bd"));
+	const signup = async (nome ,email, password, telefone) => {
+    try {
+      const response = await fetch("https://estagio-omega.vercel.app/usuario/criar/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({nome, email, password, telefone }),
+      });
 
-		const hasUser = usersStorage?.filter((user) => user.email === email);
-
-		if (hasUser?.length) {
-			return "Já tem uma conta com esse E-mail";
-		}
-
-		let newUser;
-
-		if (usersStorage) {
-			newUser = [...usersStorage, { email, password }];
-		} else {
-			newUser = [{ email, password }];
-		}
-
-		localStorage.setItem("users_bd", JSON.stringify(newUser));
-
-		return;
+      const data = await response.json();
+      if (response.ok) {
+        return data.mensagem;
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      throw error;
+    }
 	};
 
 	const signout = () => {
