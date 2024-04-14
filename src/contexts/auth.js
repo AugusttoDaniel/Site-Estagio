@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
 
 	const signup = async (nome ,email, password, telefone) => {
     try {
-      const response = await fetch("https://estagio-omega.vercel.app/usuario/cria", {
+      const response = await fetch("https://estagio-omega.vercel.app/usuario/criar", {
         method: "POST",
 				headers: {
 					"Content-Type": "application/json",
