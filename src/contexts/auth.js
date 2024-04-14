@@ -38,24 +38,27 @@ export const AuthProvider = ({ children }) => {
 		}
 	};
 
-	const signup = async (nome ,email, password, telefone) => {
-    try {
-      const response = await fetch("https://estagio-omega.vercel.app/usuario/criar", {
-        method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ nome, password , email, telefone}),
-      });
+	const signup = async (nome, email, password, telefone) => {
+		try {
+			const response = await fetch(
+				"https://estagio-omega.vercel.app/usuario/criar",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ nome, password, email, telefone }),
+				}
+			);
 
-      const data = await response.json();
-      if (response.ok) {
-        return data.mensagem;
-      }
-    } catch (error) {
-      console.error("Signup error:", error);
-      throw error;
-    }
+			const data = await response.json();
+			if (response.ok) {
+				return data.mensagem;
+			}
+		} catch (error) {
+			console.error("Signup error:", error);
+			throw error;
+		}
 	};
 
 	const signout = () => {
