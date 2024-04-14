@@ -6,15 +6,24 @@ export const AuthProvider = ({ children }) => {
 	const [user, setUser] = useState();
 
 	useEffect(() => {
-		const userToken = localStorage.getItem("token");
-		if (userToken) {
-			const decoded = jwtDecode(userToken);
-			const user = {
-				email: decoded.email,
-				id: decoded.id,
-			};
-			setUser(user);
-		}
+		const loadUser = async () => {
+			const userToken = localStorage.getItem("token");
+			if (userToken) {
+				try {
+					const decoded = jwtDecode(userToken);
+					const user = {
+						email: decoded.email,
+						id: decoded.id,
+					};
+					setUser(user);
+				} catch (error) {
+					console.error("Error decoding token:", error);
+					// Handle token decoding errors, e.g., by logging out the user
+				}
+			}
+		};
+
+		loadUser();
 	}, []);
 
 	const signin = async (email, password) => {
@@ -47,13 +56,22 @@ export const AuthProvider = ({ children }) => {
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ nome, password, email, telefone }),
+					body: JSON.stringify({ nome, email, password, telefone }),
 				}
 			);
 
 			const data = await response.json();
 			if (response.ok) {
-				return data.mensagem;
+				return data.mensagem; // Successful signup message
+			} else {
+				console.error(
+					"Signup failed with status:",
+					response.status,
+					data.mensagem
+				);
+				throw new Error(
+					data.mensagem || "Failed to sign up. Please try again later."
+				);
 			}
 		} catch (error) {
 			console.error("Signup error:", error);
