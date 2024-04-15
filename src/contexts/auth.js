@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 				body: JSON.stringify({ nome, email, senha, telefone }),
 			};
 			const response = await fetch(
-				"http://localhost:3001/usuario/criar",
+				"https://estagio-omega.vercel.app/usuario/criar",
 				requestOptions
 			);
 
