@@ -49,35 +49,32 @@ export const AuthProvider = ({ children }) => {
 
 	const signup = async (nome, email, password, telefone) => {
 		try {
-			const response = await fetch(
-				"https://estagio-omega.vercel.app/usuario/criar",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({ nome, email, password, telefone }),
-				}
-			);
-
-			const data = await response.json();
+			// Set up the configuration for the fetch request
+			const requestOptions = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ nome, email, password, telefone })
+			};
+	
+			// Send the signup request
+			const response = await fetch('https://estagio-omega.vercel.app/usuario/criar', requestOptions);
+			const data = await response.json();  // Parsing the JSON response body
+	
 			if (response.ok) {
-				return data.mensagem; // Successful signup message
+				// Return the success message if the response status is OK
+				return data.mensagem;  // Assuming the server sends back a 'mensagem' field on success
 			} else {
-				console.error(
-					"Signup failed with status:",
-					response.status,
-					data.mensagem
-				);
-				throw new Error(
-					data.mensagem || "Failed to sign up. Please try again later."
-				);
+				// Log and throw an error with the server-provided message or a default message
+				console.error('Signup failed with status:', response.status, data.mensagem);
+				throw new Error(data.mensagem || 'Failed to sign up. Please try again later.');
 			}
 		} catch (error) {
-			console.error("Signup error:", error);
+			// Log the error to the console and rethrow it
+			console.error('Signup error:', error);
 			throw error;
 		}
 	};
+	
 
 	const signout = () => {
 		setUser(null);
