@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
-	const [user, setUser] = useState();
+	const [user, setUser] = useState(null);
 
 	useEffect(() => {
 		const loadUser = async () => {
@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 					setUser(user);
 				} catch (error) {
 					console.error("Error decoding token:", error);
-					// Handle token decoding errors, e.g., by logging out the user
+					localStorage.removeItem("token"); // Remove invalid token
 				}
 			}
 		};
