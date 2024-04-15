@@ -38,7 +38,7 @@ export const labelError = styled.label`
   font-size: 14px;
   color: red;
 `;
-export const labelSucesso= styled.label`
+export const labelSucesso = styled.label`
   font-size: 14px;
   color: green;
 `;
