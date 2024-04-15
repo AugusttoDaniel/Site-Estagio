@@ -14,51 +14,62 @@ const Signin = () => {
 	const [error, setError] = useState("");
 	const [sucesso, setSucesso] = useState("");
 
-	const handleLogin = async () => {
-    if (!email || !senha) {
-      setError("Preencha todos os campos");
-      return;
-    }
-
-    try {
-      const data = await signin(email, senha); 
-      if (data === "Sucesso ao Efetuar Login") {
-        setSucesso(data);
-        navigate("/Home");
-      } else {
-        setError(data || 'Erro desconhecido');
-      }
-    } catch (error) {
-      setError("Falha ao tentar fazer login. Tente novamente.");
-    }
-  };
+	const handleLogin = async (e) => {
+		e.preventDefault();
+		if (!email || !senha) {
+			setError("Preencha todos os campos");
+			return;
+		}
+	
+		try {
+			const data = await signin(email, senha);
+			if (data === "Sucesso ao Efetuar Login") {
+				setSucesso(data);
+				setTimeout(() => navigate("/Home"), 10); 
+			} else {
+				setError(data || "Erro desconhecido");
+			}
+		} catch (error) {
+			setError("Falha ao tentar fazer login. Tente novamente.");
+		}
+	};
 
 	return (
 		<C.Container>
 			<C.Label>Faça Seu Login</C.Label>
-			<C.Content>
-				<Input
-					type="email"
-					placeholder="Digite seu E-mail"
-					value={email}
-					onChange={(e) => [setEmail(e.target.value), setError("")]}
-				/>
-				<Input
-					type="password"
-					placeholder="Digite sua Senha"
-					value={senha}
-					onChange={(e) => [setSenha(e.target.value), setError("")]}
-				/>
-				<C.labelError>{error}</C.labelError>
-				<C.labelSucesso>{sucesso}</C.labelSucesso>
-				<Button Text="Entrar" onClick={handleLogin} />
-				<C.LabelSignup>
-					Não tem uma conta?
-					<C.Strong>
-						<Link to="/signup">&nbsp;Registre-se</Link>
-					</C.Strong>
-				</C.LabelSignup>
-			</C.Content>
+			<form>
+				<C.Content>
+					<Input
+						type="email"
+						placeholder="Digite seu E-mail"
+						value={email}
+						onChange={(e) => [
+							setEmail(e.target.value),
+							setError(""),
+							setSucesso(""),
+						]}
+					/>
+					<Input
+						type="password"
+						placeholder="Digite sua Senha"
+						value={senha}
+						onChange={(e) => [
+							setSenha(e.target.value),
+							setError(""),
+							setSucesso(""),
+						]}
+					/>
+					<C.labelError>{error}</C.labelError>
+					<C.labelSucesso>{sucesso}</C.labelSucesso>
+					<Button Text="Entrar" onClick={handleLogin} />
+					<C.LabelSignup>
+						Não tem uma conta?
+						<C.Strong>
+							<Link to="/signup">&nbsp;Registre-se</Link>
+						</C.Strong>
+					</C.LabelSignup>
+				</C.Content>
+			</form>
 		</C.Container>
 	);
 };

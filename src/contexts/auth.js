@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
 					setUser(user);
 				} catch (error) {
 					console.error("Error decoding token:", error);
-					localStorage.removeItem("token"); // Remove invalid token
+					localStorage.removeItem("token"); 
 				}
 			}
 		};
@@ -27,55 +27,55 @@ export const AuthProvider = ({ children }) => {
 	}, []);
 
 	const signin = async (email, senha) => {
+		const password = senha;
 		try {
-			const response = await fetch("https://estagio-omega.vercel.app/token/", {
+			const requestOptions = {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ email, senha}),
-			});
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({email, password}),
+			};
 
-			const data = await response.json();
-			if (response.ok) {
-				localStorage.setItem("token", data.token);
-				return data.mensagem;
+			const response = await fetch(
+				"https://estagio-omega.vercel.app/token",
+				requestOptions
+			);
+
+			if (!response.ok) {
+				const errorResponse = await response.text();
+				throw new Error(errorResponse || "Unknown error occurred");
 			}
+
+			const responseData = await response.json();
+			localStorage.setItem("token", responseData.token);
+			return responseData.mensagem;
 		} catch (error) {
-			console.error("Login error:", error);
+			console.error("Signup failed:", error);
 			throw error;
 		}
 	};
 
 	const signup = async (nome, email, senha, telefone) => {
-		console.log(nome, email, senha, telefone);
 		try {
 			const requestOptions = {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ nome, email, senha,telefone }),
+				body: JSON.stringify({ nome, email, senha, telefone }),
 			};
 			const response = await fetch(
-				"https://estagio-omega.vercel.app/usuario/criar",
+				"http://localhost:3001/usuario/criar",
 				requestOptions
 			);
-			const data = await response.json();
 
-			if (response.ok) {
-				return data.mensagem;
-			} else {
-				console.error(
-					"Signup failed with status:",
-					response.status,
-					data.mensagem
-				);
-				throw new Error(
-					data.mensagem || "Failed to sign up. Please try again later."
-				);
+			if (!response.ok) {
+				const errorResponse = await response.text();
+				throw new Error(errorResponse || "Unknown error occurred");
 			}
+			const responseData = await response.json();
+			console.log("Signup successful", responseData);
+			return responseData;
 		} catch (error) {
-			console.error("Signup error:", error);
-			throw error;
+			console.error("Signup failed:", error);
+			throw error; 
 		}
 	};
 
