@@ -64,7 +64,7 @@ const Signup = () => {
 					value={senha}
 					onChange={(e) => [setSenha(e.target.value), setError("")]}
 				/>
-        <Input
+				<Input
 					type="string"
 					placeholder="Digite seu Telefone"
 					value={telefone}
