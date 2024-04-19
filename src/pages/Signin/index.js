@@ -34,7 +34,7 @@ const Signin = () => {
         setError(data || "Erro desconhecido");
       }
     } catch (error) {
-      setError("Falha ao tentar fazer login. Tente novamente.");
+		error.map((erro) => setError(erro));
     }
   };
 
