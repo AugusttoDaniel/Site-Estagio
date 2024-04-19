@@ -14,6 +14,14 @@ const Signup = () => {
 	const [sucesso, setSucesso] = useState("");
 	const navigate = useNavigate();
 
+	const clearFields = () => {
+		setNome("");
+		setEmail("");
+		setSenha("");
+		setRepeatsenha("");
+		setTelefone("");
+	}
+
 	const signup = async (nome, email, senha, telefone) => {
 		try {
 			const requestOptions = {
@@ -28,7 +36,7 @@ const Signup = () => {
 	
 			const responseData = await response.json();  
 			if (!response.ok) {
-				throw new Error(responseData.errors );
+				throw new Error(responseData.errors);
 			}
 			return responseData;
 		} catch (error) {
@@ -48,8 +56,10 @@ const Signup = () => {
 		try {
 			const result = await signup(nome, email, senha, telefone);
 			if (result.success) {
-				setSucesso("Usuário criado com sucesso!");
+				clearFields();
+				// setSucesso("Usuário criado com sucesso!");
 				navigate("/");
+				window.location.reload();
 			} else {
 				setError(result.message);
 			}
