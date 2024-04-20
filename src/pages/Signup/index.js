@@ -20,7 +20,7 @@ const Signup = () => {
 		setSenha("");
 		setRepeatsenha("");
 		setTelefone("");
-	}
+	};
 
 	const signup = async (nome, email, senha, telefone) => {
 		try {
@@ -33,8 +33,8 @@ const Signup = () => {
 				"https://estagio-omega.vercel.app/usuario/criar",
 				requestOptions
 			);
-	
-			const responseData = await response.json();  
+
+			const responseData = await response.json();
 			if (!response.ok) {
 				throw new Error(responseData.errors);
 			}
@@ -43,7 +43,7 @@ const Signup = () => {
 			throw new Error(error.message);
 		}
 	};
-	
+
 	const handleSignup = async (e) => {
 		e.preventDefault();
 		if (!nome || !email || !senha || !repeatsenha || !telefone) {
@@ -55,13 +55,12 @@ const Signup = () => {
 		}
 		try {
 			const result = await signup(nome, email, senha, telefone);
-			if (result.success) {
+			if (result.message === "Usuário criado com sucesso!") {
 				clearFields();
-				// setSucesso("Usuário criado com sucesso!");
-				navigate("/");
-				window.location.reload();
-			} else {
-				setError(result.message);
+				setSucesso("Usuário criado com sucesso!");
+				setTimeout(() => {
+					navigate("/");
+				}, 3000);
 			}
 		} catch (error) {
 			setError(error.message);
