@@ -45,8 +45,6 @@ export const AuthProvider = ({ children }) => {
 		}
 	};
 
-	
-
 	const signout = () => {
 		setUser(null);
 		localStorage.clear();
@@ -54,9 +52,7 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	return (
-		<AuthContext.Provider
-			value={{ user, signed: !!user, signin, signout }}
-		>
+		<AuthContext.Provider value={{ user, signed: !!user, signin, signout }}>
 			{children}
 		</AuthContext.Provider>
 	);
