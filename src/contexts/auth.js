@@ -31,17 +31,18 @@ export const AuthProvider = ({ children }) => {
 
 			if (!response.ok) {
 				const errorResponse = await response.text();
-				throw new Error(errorResponse || "Unknown error occurred");
+				throw new Error(errorResponse.errors);
 			}
 
 			const responseData = await response.json();
+			
 			localStorage.setItem("token", responseData.token);
 			window.location.reload();
 			return responseData.mensagem;
 		} catch (error) {
 			console.error("Signup failed:", error);
 			localStorage.removeItem("token");
-			throw error;
+			throw new Error(error);
 		}
 	};
 
