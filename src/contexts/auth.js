@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 			};
 
 			const response = await fetch(
-				"https://estagio-omega.vercel.app/token",
+				"https://estagio-ten.vercel.app/token",
 				requestOptions
 			);
 

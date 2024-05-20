@@ -30,7 +30,7 @@ const Signup = () => {
 				body: JSON.stringify({ nome, email, senha, telefone }),
 			};
 			const response = await fetch(
-				"https://estagio-omega.vercel.app/usuario/criar",
+				"https://estagio-ten.vercel.app/usuario/criar",
 				requestOptions
 			);
 
